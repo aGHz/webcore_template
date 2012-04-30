@@ -5,17 +5,18 @@ from setuptools import setup, find_packages
 
 
 setup(
-        name = "Project",
-        version = "0.1",
-        description = "",
-        author = "Adrian Ghizaru",
-        author_email = "adrian.ghizaru@gmail.com",
-        url = "http://aghz.ca/",
+        name = "__project__",
+        version = "0.1.0",
+        description = "__project_description__",
+        author = "__author_name__",
+        author_email = "__author_email__",
+        url = "__project_url__",
 
         install_requires = [
             'WebCore < 2.0',
             'jinja2',
-            'IPython==0.10'
+            'IPython==0.10',
+            'psutil',
             ],
         packages = find_packages(exclude=[
             'schema'
@@ -24,7 +25,7 @@ setup(
         zip_safe = False,
         include_package_data = True,
         package_data = {
-                '': ['README.textile', 'LICENSE'],
+                '': ['README.md', 'LICENSE'],
                 '__project__': ['templates/*']
             },
 
