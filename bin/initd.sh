@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Copy this file to the app's bin/ directory, change $DIR and symlink it from /etc/init.d/<name>
+# Symlink this file from /etc/init.d/__project__
 # Run `update-rc.d <name> defaults` to install in /etc/rc*.d/
 # Run `update-rc.d -f <name> remove` to uninstall from /etc/rc*.d/ but keep the init.d script
 
