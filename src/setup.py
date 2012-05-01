@@ -14,6 +14,7 @@ setup(
 
         install_requires = [
             'WebCore<2.0',
+            'flup',
             'jinja2',
             'IPython>=0.12',
             'psutil',
