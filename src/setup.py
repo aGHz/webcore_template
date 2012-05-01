@@ -13,9 +13,9 @@ setup(
         url = "__project_url__",
 
         install_requires = [
-            'WebCore < 2.0',
+            'WebCore<2.0',
             'jinja2',
-            'IPython==0.10',
+            'IPython>=0.12',
             'psutil',
             ],
         packages = find_packages(exclude=[

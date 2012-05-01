@@ -8,7 +8,7 @@ import sys
 
 
 class AdminCommand(Command):
-    """Run the HSH API admin shell"""
+    """Run the __project__ admin shell"""
     summary = __doc__.splitlines()[0]
     group_name = '__project__'
 
@@ -40,13 +40,12 @@ class AdminCommand(Command):
             # try to use IPython if possible
             if self.options.disable_ipython:
                 raise ImportError()
-            from IPython.Shell import IPShellEmbed
-            shell = IPShellEmbed(argv=self.args)
+            from IPython.frontend.terminal.embed import InteractiveShellEmbed
             if self.options.verbose:
-                shell.set_banner(shell.IP.BANNER)
+                shell = InteractiveShellEmbed()
                 print ''
             else:
-                shell.set_banner('')
+                shell = InteractiveShellEmbed(banner1='')
             shell(local_ns=locs, global_ns={})
 
         except ImportError:
