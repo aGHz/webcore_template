@@ -15,6 +15,7 @@ COMMANDS = ['show_config', 'show_commands', # system commands
             ]
 
 class ManageCommand(Command):
+    """Run __project__ management commands"""
     summary = __doc__.splitlines()[0]
     group_name = '__project__'
 
