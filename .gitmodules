@@ -1,0 +1,3 @@
+[submodule "usr/src/webcore"]
+	path = usr/src/webcore
+	url = https://github.com/marrow/WebCore.git
