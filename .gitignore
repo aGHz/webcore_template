@@ -11,7 +11,6 @@ bin/
 include/
 lib/
 lib64
-share/
 var/
 local
 develop-eggs/
