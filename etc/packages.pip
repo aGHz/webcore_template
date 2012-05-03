@@ -1,1 +1,2 @@
 -e usr/src/webcore
+-e usr/src/marrow.templating

@@ -1,3 +1,6 @@
 [submodule "usr/src/webcore"]
 	path = usr/src/webcore
 	url = https://github.com/marrow/WebCore.git
+[submodule "usr/src/marrow.templating"]
+	path = usr/src/marrow.templating
+	url = https://github.com/marrow/marrow.templating.git
