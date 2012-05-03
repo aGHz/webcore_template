@@ -21,7 +21,7 @@ class ManageCommand(Command):
 
     parser = Command.standard_parser(verbose=True)
     parser.add_option('-c', '--config', action='store', dest='config_file', type='string',
-                      default='./etc/management.ini', help='Paste deploy config file')
+                      default='./etc/manage.ini', help='Paste deploy config file')
     def command(self):
         command = self.args.pop(0) if self.args else 'show_commands'
         if command in COMMANDS and hasattr(self, command)\

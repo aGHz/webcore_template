@@ -14,7 +14,7 @@ class AdminCommand(Command):
 
     parser = Command.standard_parser(verbose=True)
     parser.add_option('-c', '--config', action='store', dest='config_file', type='string',
-                      default='./etc/development.ini', help='Paste deploy config file')
+                      default='./etc/local.ini', help='Paste deploy config file')
     parser.add_option('-f', '--file', action='store', dest='script_file', type='string',
                       help='Python file to run')
     parser.add_option('--no-ipython', action='store_true', dest='disable_ipython',
