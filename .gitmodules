@@ -4,3 +4,6 @@
 [submodule "usr/src/marrow.templating"]
 	path = usr/src/marrow.templating
 	url = https://github.com/marrow/marrow.templating.git
+[submodule "usr/src/marrow.util"]
+	path = usr/src/marrow.util
+	url = https://github.com/marrow/marrow.util.git
