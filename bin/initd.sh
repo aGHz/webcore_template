@@ -6,11 +6,11 @@
 
 # Point this to the root of the hshapi install (containing all the bin/, src/, etc/ folders)
 DIR=/path/to
-USER=user
-GROUP=group
+USER=__user__
+GROUP=__group__
 
 PIDFILE=$DIR/var/run/production.pid
-LOGFILE=$DIR/var/log/paster-production.log
+LOGFILE=$DIR/var/log/console.log
 PROJECT=`basename $DIR`
 
 do_start()
