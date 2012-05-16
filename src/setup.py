@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
         name = "__project__",
-        version = "0.1.0",
+        version = "0.0.1",
         description = "__project_description__",
         author = "__author_name__",
         author_email = "__author_email__",
