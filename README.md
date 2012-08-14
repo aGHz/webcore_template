@@ -30,11 +30,11 @@ and `PROJ_URL` with the url of the git repository for your new project.
 Customized setup instructions script
 ------------------------------------
 
-A [script](https://github.com/aGHz/webcore_template/blob/master/instructions.py) is provided
+A [script](https://github.com/aGHz/webcore_template/blob/master/setup.py) is provided
 to generate customized setup instructions.
 
-    python instructions.py -n PROJECT -p PROJ_PATH [-u PROJ_URL]
-    python instructions.py --name=PROJECT --path=PROJ_PATH [--url=PROJ_URL]
+    python setup.py -n PROJECT -p PROJ_PATH [-u PROJ_URL]
+    python setup.py --name=PROJECT --path=PROJ_PATH [--url=PROJ_URL]
 
 Omitting `-u/--url` will not generate instructions related to uploading to a new remote (11, 12 and 16).
 
@@ -43,8 +43,8 @@ Without it, the vanilla .gitmodules provided in this repository is used,
 which downloads from the read-only repositories provided by [marrow](http://github.com/marrow/) on GitHub.
 If instead you want to enable read-write access or use a fork, specify
 
-    python instructions.py ... --submodules=git@github:marrow
-    python instructions.py ... --submodules=https://github.com/fork
+    python setup.py ... --submodules=git@github:marrow
+    python setup.py ... --submodules=https://github.com/fork
 
 If you don't want to use [git-flow](https://github.com/nvie/gitflow/) (even though you [should](http://nvie.com/posts/a-successful-git-branching-model/)),
 specify `--no-flow`.
@@ -53,7 +53,7 @@ Semi-automatic and automatic setup
 ----------------------------------
 
 The raw script is available for direct download from
-[GitHub](https://raw.github.com/aGHz/webcore_template/master/instructions.py)
+[GitHub](https://raw.github.com/aGHz/webcore_template/master/setup.py)
 or from the shorter URL [http://aghz.ca/webcore.py](http://aghz.ca/webcore.py).
 The script can be grabbed via `curl` and piped to `python` to very easily generate
 a working set of instructions.
