@@ -24,7 +24,7 @@ Examples:
     python setup.py -n Project -p /home/me/src/Project
     python setup.py -u git@github.com:me/myproject --submodules=git@github.com/me Project
 
-    curl http://aghz.ca/webcore.py | python - MyProject | sh
+    curl -sL http://aghz.ca/webcore.py | python - MyProject | sh
 
 Additional information at http://aghz.ca/webcore.readme
 """
