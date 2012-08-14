@@ -3,11 +3,19 @@ import getopt
 
 
 def main(argv):
-    opt = dict(getopt.getopt(argv, 'n:p:u:', ['name=', 'path=', 'url=', 'submodules='])[0])
+    opt = dict(getopt.getopt(argv, 'n:p:u:', ['name=',
+                                              'path=',
+                                              'url=',
+                                              'submodules=',
+                                              'no-flow',
+                                              ])
+               [0])
     name = opt.get('-n', opt.get('--name', None))
     path = opt.get('-p', opt.get('--path', None))
     url = opt.get('-u', opt.get('--url', None))
     submodules = opt.get('--submodules', None)
+    noflow = '--no-flow' in opt
+
     if name is None:
         print 'Project name is required, specify using `-n NAME` or `--name=NAME`'
         return 1
@@ -16,8 +24,7 @@ def main(argv):
         return 1
 
     out = """
-#!/bin/sh
-git clone -b master git@github.com:aGHz/webcore_template.git {path}
+git clone -b master https://github.com/aGHz/webcore_template.git {path}
 cd {path}
 git remote rm origin
 git mv src/__project__ src/{name}
@@ -43,13 +50,13 @@ git push -u origin master
     out += """
 git submodule init
 git submodule update
-git flow init
 """[1:]
 
+    if not noflow:
+        out += "git flow init\n"
+
     if url is not None:
-        out += """
-git push -u origin develop
-"""[1:]
+        out += "git push -u origin develop\n"
 
     print out.format(name=name, path=path, url=url)
 
