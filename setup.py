@@ -93,8 +93,7 @@ def main(argv):
             ])
 
     out.extend([
-        "git submodule init",
-        "git submodule update",
+        "git submodule update --init --recursive",
         ])
 
     if flow:
