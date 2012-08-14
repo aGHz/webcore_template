@@ -9,20 +9,20 @@ def syntax():
 Syntax:
     python setup.py [options] PROJECT
     python setup.py -n PROJECT [-p PROJ_PATH] [-u PROJ_URL] [--submodules=<...>] [--no-flow]
+    python setup.py --name=PROJECT [--path=PROJ_PATH] [--url=PROJ_URL]
 
 Options:
-    -n/--name=       The name of the project (can be specified without -n)
-    -p/--path=       Absolute path for the project, defaults to `pwd`/PROJECT
-    -u/--url=        Git repository url for remote origin
-                     Skip remote-related commands if omitted
-    --submodules=    Submodule root, e.g. git@github.com/marrow, https://github.com/fork
+    -n/--name        The name of the project. Can be specified without -n, after option list
+    -p/--path        Absolute path for the project. Defaults to `pwd`/PROJECT
+    -u/--url         Git repository url for remote origin. Skip remote-related commands if omitted
+    --submodules     Submodule root, e.g. git@github.com/marrow, https://github.com/fork
                      Must expose the repositories: WebCore, marrow.templating, marrow.util
-    --no-flow        Skip git-flow commands. Not recommended.
+    --no-flow        Skip git-flow commands. Not recommended, install git-flow instead!
 
 Examples:
-    python setup.py Project
-    python setup.py -n Project -p /home/me/src/Project
-    python setup.py -u git@github.com:me/myproject --submodules=git@github.com/me Project
+    python setup.py MyProject
+    python setup.py -n MyProject -p /home/me/src/my_project
+    python setup.py -u git@github.com:me/my_project --submodules=git@github.com/me MyProject
 
     curl -sL http://aghz.ca/webcore.py | python - MyProject | sh
 
