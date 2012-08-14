@@ -2,6 +2,11 @@ Web app template
 ================
 using WebCore, Paste, Flup and Nginx
  
+tl;dr
+-----
+
+    curl -sL http://aghz.ca/webcore.py | python -
+
 Setting up a new project
 ------------------------
 
