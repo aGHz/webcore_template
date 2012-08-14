@@ -4,7 +4,7 @@ import sys
 
 
 def syntax():
-    print """Generate setup instructions for the WebCore starter kit at https://github.com/aGHz/webcore_template/
+    print """Generate setup instructions for the WebCore starter kit
 
 Syntax:
     python setup.py [options] PROJECT
@@ -26,7 +26,10 @@ Examples:
 
     curl -sL http://aghz.ca/webcore.py | python - MyProject | sh
 
-Additional information at http://aghz.ca/webcore.readme
+Additional information:
+    https://github.com/marrow/WebCore
+    https://github.com/aGHz/webcore_template
+    http://aghz.ca/webcore.readme
 """
 
 def main(argv):

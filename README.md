@@ -1,6 +1,10 @@
 Web app template
 ================
-using WebCore, Paste, Flup and Nginx
+A useful starter kit for web applications using
+[WebCore](https://github.com/marrow/WebCore),
+[Paste](http://pythonpaste.org/),
+[Flup](http://trac.saddi.com/flup) and
+[Nginx](http://wiki.nginx.org/Main)
  
 tl;dr
 -----
