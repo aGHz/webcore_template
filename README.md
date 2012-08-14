@@ -29,3 +29,6 @@ and `PROJ_URL` with the url of the git repository for your new project.
 # `git flow init`
 # `git push -u origin develop`
 
+Semi-automatic setup
+--------------------
+
