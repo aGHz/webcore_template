@@ -42,20 +42,27 @@ Customized setup instructions script
 A [script](https://github.com/aGHz/webcore_template/blob/master/setup.py) is provided
 to generate customized setup instructions.
 
-    python setup.py -n PROJECT -p PROJ_PATH [-u PROJ_URL]
+    python setup.py -n PROJECT [-p PROJ_PATH] [-u PROJ_URL]
     python setup.py --name=PROJECT --path=PROJ_PATH [--url=PROJ_URL]
+
+Omitting `-p/--path` will create the project in a directory called PROJECT under the current directory.
 
 Omitting `-u/--url` will not generate instructions related to uploading to a new remote (11, 12 and 16).
 
-To alter the submodules URL for step 7 above, use the `--submodules` option.
-Without it, the vanilla .gitmodules provided in this repository is used,
-which downloads from the read-only repositories provided by [marrow](http://github.com/marrow/) on GitHub.
-If instead you want to enable read-write access or use a fork, specify
+The vanilla [.gitmodules](https://github.com/aGHz/webcore_template/blob/master/.gitmodules) file uses the
+[WebCore](https://github.com/marrow/WebCore),
+[marrow.templating](https://github.com/marrow/marrow.templating) and
+[marrow.util](https://github.com/marrow/marrow.util) public, read-only GitHub repositories
+provided by [marrow](https://github.com/marrow/).
+Using the `--submodules` option will attempt to automate step 7 above by replacing the root URL of
+these submodules. The given URL must contain all 3 repositories with the exact same name.
+This is useful if you prefer to use a fork of the projects, or if you want to enable read-write access.
+For example:
 
     python setup.py ... --submodules=git@github:marrow
     python setup.py ... --submodules=https://github.com/fork
 
-If you don't want to use [git-flow](https://github.com/nvie/gitflow/) (even though you [should](http://nvie.com/posts/a-successful-git-branching-model/)),
+If you don't want to use [git-flow](https://github.com/nvie/gitflow/) in steps 15 and 16 above,
 specify `--no-flow`.
 
 Semi-automatic and automatic setup
