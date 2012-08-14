@@ -14,7 +14,7 @@ def main(argv):
     path = opt.get('-p', opt.get('--path', None))
     url = opt.get('-u', opt.get('--url', None))
     submodules = opt.get('--submodules', None)
-    noflow = '--no-flow' in opt
+    flow = '--no-flow' not in opt
 
     if name is None:
         print 'Project name is required, specify using `-n NAME` or `--name=NAME`'
@@ -52,10 +52,10 @@ git submodule init
 git submodule update
 """[1:]
 
-    if not noflow:
+    if flow:
         out += "git flow init\n"
 
-    if url is not None:
+    if url is not None and flow:
         out += "git push -u origin develop\n"
 
     print out.format(name=name, path=path, url=url)
