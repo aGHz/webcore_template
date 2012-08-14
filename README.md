@@ -76,5 +76,5 @@ directly to `sh` for an automatic setup:
 
 If you go the parent directory of your new project (e.g. `cd ~/src`), this is even nicer:
 
-    curl -sL http://aghz.ca/webcore.py | python - -n PROJECT -p `pwd`/PROJECT | sh
+    curl -sL http://aghz.ca/webcore.py | python - PROJECT | sh
 
