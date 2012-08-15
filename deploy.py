@@ -61,6 +61,7 @@ def flow():
     out = [
         "", "# " + '-' * 72,
         "# Initialize git-flow",
+        "# " + '-' * 72,
         "git flow init",
         "git checkout develop", # Possibly redundant
         "",
@@ -86,6 +87,7 @@ def venv():
     out = [
         "", "# " + '-' * 72,
         "# Initialize virtualenv",
+        "# " + '-' * 72,
         "virtualenv --no-site-packages --distribute .",
         ". bin/activate",
         "",
@@ -115,6 +117,7 @@ def nginx(path, linux):
     out += [
         "", "# " + '-' * 72,
         "# Sym-link to the Nginx config from the proper location",
+        "# " + '-' * 72,
         "{0}ln -s /path/to/etc/nginx.conf {1}".format('sudo ' if linux else '', os.path.join(path, '__project__')),
         "",
         ]
@@ -134,6 +137,7 @@ def auto(linux):
         out = [
             "", "# " + '-' * 72,
             "# Sym-link to the init.d script from the proper location",
+            "# " + '-' * 72,
             "sudo ln -s /path/to/bin/initd.sh /etc/init.d/__project__",
             "sudo update-rc.d __project__ defaults",
             "",
@@ -168,7 +172,9 @@ def start(opt, linux):
         out += [
             "", "# " + '-' * 72,
             "# Start the production server",
+            "# " + '-' * 72,
             "echo",
+            "echo " + '-' * 80,
             "echo Starting production server",
             ]
         if linux:
@@ -181,14 +187,20 @@ def start(opt, linux):
                 "echo '    ./etc/production.ini start'",
                 "./etc/production.ini start",
                 ]
-        out += [""]
+        out += [
+            "echo " + '-' * 80,
+            "",
+            ]
 
     out += [
         "", "# " + '-' * 72,
         "# Local server instructions",
+        "# " + '-' * 72,
         "echo",
-        "echo To run the local development server:",
-        "echo '   ./etc/local.ini'",
+        "echo " + '-' * 80,
+        "echo '    To run the local development server:'",
+        "echo '    ./etc/local.ini'",
+        "echo " + '-' * 80,
         "echo",
         "",
         ]
@@ -221,7 +233,10 @@ def main(argv):
         restart('--nginx' in argv)
         return 1
 
-    out = [""]
+    out = [
+        "",
+        "cd /path/to",
+        ]
 
     if '--flow' in opt:
         out += flow()
@@ -241,9 +256,9 @@ def main(argv):
         "",
         "# " + '-' * 72,
         "# ",
-        "#    Run this script using",
+        "#    If the script is correct, run the following to deploy:",
         "# ",
-        "#        {0}".format(' '.join(sys.argv) + ' | sh'),
+        "#    python {0}".format(' '.join(sys.argv) + ' | sh'),
         "# ",
         "# " + '-' * 72,
         "",

@@ -54,57 +54,88 @@ def main(argv):
     if name is None:
         if len(argv) == 1:
             name = argv[0]
-            print '# Name option not specified, assuming project name is "{name}"'.format(name=name)
+            print '# WARNING: Name option not specified, assuming project name is "{name}"'.format(name=name)
         else:
             syntax()
             return 1
     if path is None:
         path = os.path.join(os.getcwd(), name)
-        print '# Path option not specified, assuming "{path}"'.format(path=path)
+        print '# WARNING: Path option not specified, assuming "{path}"'.format(path=path)
 
     out = [
+        "", "# " + '-' * 72,
+        "# Clone the template into {path}",
+        "# " + '-' * 72,
         "git clone -b master https://github.com/aGHz/webcore_template.git {path}",
         "cd {path}",
+        "",
+        "# Remove the template origin",
         "git remote rm origin",
+        "",
+        "", "# " + '-' * 72,
+        "# Remove files only needed for setup",
+        "# " + '-' * 72,
         "git rm setup.py",
         "echo \"{name}\\n{name_equals}\\n\\n\" > README.md",
+        "",
+        "", "# " + '-' * 72,
+        "# Customize the template ",
+        "# " + '-' * 72,
         "git mv src/__project__ src/{name}",
         "grep -rl __project__ * | xargs sed -i '' 's|__project__|{name}|g'",
         "grep -rl '/path/to' * | xargs sed -i '' 's|/path/to|{path}|g'",
-        ]
-
-    if submodules is not None:
-        out += [
-            "sed -i '' 's|https://github.com/marrow|{submodules}|' .gitmodules",
-            ]
-
-    out += [
+        "sed -i '' 's|https://github.com/marrow|{submodules}|' .gitmodules\n" if submodules is not None else "",
         "git commit -a -m 'Customized WebCore template'",
+        "",
+        "", "# " + '-' * 72,
+        "# Wipe out the git commit history to start fresh",
+        "# " + '-' * 72,
         "git reset --soft TAIL",
         "git commit --amend -m 'Initialized repository from WebCore template'",
+        "",
         ]
 
     if url is not None:
         out += [
+            "", "# " + '-' * 72,
+            "# Set the new origin remote",
+            "# " + '-' * 72,
             "git remote add origin {url}",
             "git push -u origin master",
+            "",
             ]
 
     out += [
+        "", "# " + '-' * 72,
+        "# Initialize and check out all the git submodules",
+        "# " + '-' * 72,
         "git submodule update --init --recursive",
+        "",
         ]
 
     if flow:
         out += [
-            'echo "\n\n\n\n\n\n\n" | git flow init',
+            "", "# " + '-' * 72,
+            "# Initialize git-flow with default settings",
+            "# " + '-' * 72,
+            'echo "\\n\\n\\n\\n\\n\\n\\n" | git flow init',
             ]
+        if url is not None:
+            out += [
+                "git checkout develop", # Possibly redundant
+                "git push -u origin develop",
+                ]
+        out += [""]
 
-    if url is not None and flow:
-        out += [
-            "git push -u origin develop",
-            ]
-
-    out += ["", "echo"]
+    out += [
+        "", "# " + '-' * 72,
+        "# ",
+        "#    If the script looks correct, pipe it through `sh` to install",
+        "# ",
+        "# " + '-' * 72,
+        "echo",
+        "",
+        ]
     print "\n".join(out).format(name=name, path=path, url=url, submodules=submodules, name_equals='='*len(name))
 
     return 0

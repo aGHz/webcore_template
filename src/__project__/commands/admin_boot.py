@@ -12,7 +12,7 @@ _ansi = {
 
 print ''
 print 'Available {mdl}modules{r}, {cls}classes{r} and {obj}objects{r}'.format(**_ansi)
-print '----------------------------'
+print '-' * 38
 print 'import {mdl}web{r}'.format(**_ansi)
 import web
 print 'from web.core import {mdl}http{r}, {cls}Controller{r}, {obj}request{r}, {obj}response{r}'.format(**_ansi)
@@ -33,4 +33,4 @@ print "          Make requests with app.get('<path>'), app.post('<path>', params
 
 print ''
 print 'Admin shell'
-print '-----------',
+print '-' * 11,
