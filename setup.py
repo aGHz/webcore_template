@@ -5,6 +5,7 @@ import sys
 
 def syntax():
     print """Generate setup instructions for the WebCore starter kit
+After review, the output can be run manually or piped through sh
 
 Syntax:
     python setup.py <options>

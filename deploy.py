@@ -7,6 +7,7 @@ import sys
 
 def syntax():
     print """Generate instructions to deploy this new installation of __project__
+After review, the output can be run manually or piped through sh
 
 Syntax:
     python deploy.py [restart] [options]
