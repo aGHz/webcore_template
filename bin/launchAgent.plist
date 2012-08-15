@@ -7,7 +7,7 @@
   <key>ProgramArguments</key>
   <array>
     <string>/path/to/bin/initd.sh</string>
-    <string>start</string>
+    <string>run</string>
   </array>
   <key>RunAtLoad</key>
   <true/>

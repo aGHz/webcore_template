@@ -159,6 +159,7 @@ def auto(user_group, linux):
             "echo",
             "echo " + '-' * 80,
             "echo '    To no longer start on boot, run:'",
+            "echo '        sudo /etc/init.d/__project__ stop'",
             "echo '        sudo update-rc.d -f __project__ remove'",
             "echo " + '-' * 80,
             "echo",
@@ -168,9 +169,11 @@ def auto(user_group, linux):
         out += [
             "# Sym-link to the LaunchAgent plist from the proper location",
             "ln -s /path/to/bin/launchAgent.plist ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist",
+            "launchctl load ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist",
             "echo",
             "echo " + '-' * 80,
             "echo '    To no longer start on boot, run:'",
+            "echo '        launchctl stop com.__project__.__logged_user__.production'",
             "echo '        launchctl remove com.__project__.__logged_user__.production'",
             "echo '        rm ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist'",
             "echo " + '-' * 80,
@@ -210,8 +213,8 @@ def start(opt, linux):
                 ]
         else:
             out += [
-                "echo '        ./bin/initd.sh start'",
-                "./bin/initd.sh start",
+                "echo '        launchctl start com.__project__.__logged_user__.production'",
+                "launchctl start com.__project__.__logged_user__.production",
                 ]
         out += [
             "echo " + '-' * 80,
@@ -231,8 +234,15 @@ def start(opt, linux):
         out += [
             "echo " + '-' * 80,
             "echo '    To control the local production server:'",
-            "echo '    ./bin/initd.sh start|stop|restart'",
             ]
+            if linux:
+                out += [
+                    "echo '    sudo /etc/init.d/__project__ start|stop|restart'",
+                    ]
+            else:
+                out += [
+                    "echo '    launchctl start|stop com.__project__.__logged_user__.production'",
+                    ]
     out += [
         "echo " + '-' * 80,
         "echo",

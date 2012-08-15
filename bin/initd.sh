@@ -1,10 +1,5 @@
 #! /bin/sh
 
-# Symlink this file from /etc/init.d/__project__
-# Run `update-rc.d __project__ defaults` to install in /etc/rc*.d/
-# Run `update-rc.d -f __project__ remove` to uninstall from /etc/rc*.d/ but keep the init.d script
-
-# Point this to the root of the __project__ install (containing all the bin/, src/, etc/ folders)
 DIR=/path/to
 USER=__user__
 GROUP=__group__
@@ -33,7 +28,15 @@ do_status()
     cd $DIR && . bin/activate && paster serve --pid-file=$PIDFILE --log-file=$LOGFILE --user=$USER --group=$GROUP --daemon etc/production.ini status
 }
 
+do_run()
+{
+    cd $DIR && . bin/activate && paster serve --pid-file=$PIDFILE --log-file=$LOGFILE --user=$USER --group=$GROUP etc/production.ini
+}
+
 case "$1" in
+  run)
+    do_run
+    ;;
   start)
     echo "Starting $PROJECT"
     do_start
@@ -50,7 +53,7 @@ case "$1" in
     do_restart
     ;;
   *)
-    echo "Usage: $0 {start|stop|status|restart}" >&2
+    echo "Usage: $0 {run|start|stop|status|restart}" >&2
     exit 3
     ;;
 esac
