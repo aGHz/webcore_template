@@ -7,13 +7,12 @@ def syntax():
     print """Generate setup instructions for the WebCore starter kit
 
 Syntax:
-    python setup.py [options] PROJECT
-    python setup.py -n PROJECT [-p PROJ_PATH] [-u PROJ_URL] [--submodules=<...>] [--no-flow]
-    python setup.py --name=PROJECT [--path=PROJ_PATH] [--url=PROJ_URL]
+    python setup.py <options>
+    python setup.py [options] <name>
 
 Options:
     -n/--name        The name of the project. Can be specified without -n, after option list
-    -p/--path        Absolute path for the project. Defaults to `pwd`/PROJECT
+    -p/--path        Absolute path for the project. Defaults to `pwd`/<name>
     -u/--url         Git repository url for remote origin. Skip remote-related commands if omitted
     --submodules     Submodule root, e.g. git@github.com/marrow, https://github.com/fork
                      Must expose the repositories: WebCore, marrow.templating, marrow.util
@@ -29,7 +28,6 @@ Examples:
 Additional information:
     https://github.com/marrow/WebCore
     https://github.com/aGHz/webcore_template
-    http://aghz.ca/webcore.readme
 """
 
 def main(argv):
@@ -76,35 +74,35 @@ def main(argv):
         ]
 
     if submodules is not None:
-        out.extend([
+        out += [
             "sed -i '' 's|https://github.com/marrow|{submodules}|' .gitmodules",
-            ])
+            ]
 
-    out.extend([
+    out += [
         "git commit -a -m 'Customized WebCore template'",
         "git reset --soft TAIL",
         "git commit --amend -m 'Initialized repository from WebCore template'",
-        ])
+        ]
 
     if url is not None:
-        out.extend([
+        out += [
             "git remote add origin {url}",
             "git push -u origin master",
-            ])
+            ]
 
-    out.extend([
+    out += [
         "git submodule update --init --recursive",
-        ])
+        ]
 
     if flow:
-        out.extend([
+        out += [
             "git flow init",
-            ])
+            ]
 
     if url is not None and flow:
-        out.extend([
+        out += [
             "git push -u origin develop",
-            ])
+            ]
 
     print "\n".join(out).format(name=name, path=path, url=url, submodules=submodules, name_equals='='*len(name))
 

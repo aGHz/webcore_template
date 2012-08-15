@@ -1,10 +1,10 @@
 #! /bin/sh
 
 # Symlink this file from /etc/init.d/__project__
-# Run `update-rc.d <name> defaults` to install in /etc/rc*.d/
-# Run `update-rc.d -f <name> remove` to uninstall from /etc/rc*.d/ but keep the init.d script
+# Run `update-rc.d __project__ defaults` to install in /etc/rc*.d/
+# Run `update-rc.d -f __project__ remove` to uninstall from /etc/rc*.d/ but keep the init.d script
 
-# Point this to the root of the hshapi install (containing all the bin/, src/, etc/ folders)
+# Point this to the root of the __project__ install (containing all the bin/, src/, etc/ folders)
 DIR=/path/to
 USER=__user__
 GROUP=__group__
