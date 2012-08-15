@@ -235,14 +235,10 @@ def start(opt, linux):
             "echo " + '-' * 80,
             "echo '    To control the local production server:'",
             ]
-            if linux:
-                out += [
-                    "echo '    sudo /etc/init.d/__project__ start|stop|restart'",
-                    ]
-            else:
-                out += [
-                    "echo '    launchctl start|stop com.__project__.__logged_user__.production'",
-                    ]
+        if linux:
+            out += ["echo '    sudo /etc/init.d/__project__ start|stop|restart'"]
+        else:
+            out += ["echo '    launchctl start|stop com.__project__.__logged_user__.production'"]
     out += [
         "echo " + '-' * 80,
         "echo",
