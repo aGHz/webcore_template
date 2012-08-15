@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 def syntax():
-    print """Deploy this new installation of __project__
+    print """Generate instructions to deploy this new installation of __project__
 
 Syntax:
     python deploy.py [restart] [options]
@@ -25,16 +25,17 @@ Options:
                 Only needed when the Nginx configuration changed
 
 Examples:
-    Typical activation of a fresh WebCore template install
+    Typical activation of a fresh WebCore template setup
     python deploy.py --venv
 
     Typical for development, running builtin server without Nginx our autostart
     python deploy.py --flow --venv
 
     Typical for production environments
-    python deploy.py --flow --venv --auto --nginx=/etc/nginx/sites-enabled
+    python deploy.py --flow --venv --auto --nginx
 
-    python deploy.py restart --nginx
+    After making changes to the Python code
+    python deploy.py restart
 
 """
 
