@@ -151,7 +151,7 @@ def auto(user_group, linux):
         ]
 
     if linux:
-        out = [
+        out += [
             "# Sym-link to the init.d script from the proper location",
             "sudo ln -s /path/to/bin/initd.sh /etc/init.d/__project__",
             "sudo update-rc.d __project__ defaults",
@@ -165,9 +165,9 @@ def auto(user_group, linux):
             "",
             ]
     else:
-        out = [
+        out += [
             "# Sym-link to the LaunchAgent plist from the proper location",
-            "ln -s /path/to/bin/launchAgent.plist ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist"
+            "ln -s /path/to/bin/launchAgent.plist ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist",
             "echo",
             "echo " + '-' * 80,
             "echo '    To no longer start on boot, run:",
@@ -201,16 +201,16 @@ def start(opt, linux):
             "# " + '-' * 72,
             "echo",
             "echo " + '-' * 80,
-            "echo Starting production server",
+            "echo '    Starting production server'",
             ]
         if linux:
             out += [
-                "echo '    sudo /etc/init.d/__project__ start'",
+                "echo '        sudo /etc/init.d/__project__ start'",
                 "sudo /etc/init.d/__project__ start",
                 ]
         else:
             out += [
-                "echo '    ./bin/initd.sh start'",
+                "echo '        ./bin/initd.sh start'",
                 "./bin/initd.sh start",
                 ]
         out += [
@@ -231,7 +231,7 @@ def start(opt, linux):
         out += [
             "echo " + '-' * 80,
             "echo '    To control the local production server:'",
-            "echo '    ./bin/initd.sh (start|stop|restart)'",
+            "echo '    ./bin/initd.sh start|stop|restart'",
             ]
     out += [
         "echo " + '-' * 80,
