@@ -104,6 +104,7 @@ def main(argv):
             "git push -u origin develop",
             ]
 
+    out += ["", "echo"]
     print "\n".join(out).format(name=name, path=path, url=url, submodules=submodules, name_equals='='*len(name))
 
     return 0
