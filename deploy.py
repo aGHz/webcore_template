@@ -25,6 +25,9 @@ Options:
                 Only needed when the Nginx configuration changed
 
 Examples:
+    Typical activation of a fresh WebCore template install
+    python deploy.py --venv
+
     Typical for development, running builtin server without Nginx our autostart
     python deploy.py --flow --venv
 

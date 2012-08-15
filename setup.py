@@ -128,13 +128,21 @@ def main(argv):
         out += [""]
 
     out += [
+        "echo",
+        "echo",
+        "echo " + '-' * 80,
+        "echo '    WebCore starter kit has been installed and configured'",
+        "echo '    To activate it, you need to perform a local deploy:'",
+        "echo '        cd {path}'",
+        "echo '        python deploy.py'",
+        "echo " + '-' * 80,
+        "echo",
+        "",
         "", "# " + '-' * 72,
         "# ",
         "#    If the script looks correct, pipe it through `sh` to install",
         "# ",
         "# " + '-' * 72,
-        "echo",
-        "",
         ]
     print "\n".join(out).format(name=name, path=path, url=url, submodules=submodules, name_equals='='*len(name))
 
