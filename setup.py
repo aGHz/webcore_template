@@ -96,7 +96,7 @@ def main(argv):
 
     if flow:
         out += [
-            "git flow init",
+            'echo -e "\n\n\n\n\n\n\n" | git flow init',
             ]
 
     if url is not None and flow:
