@@ -17,7 +17,9 @@ Options:
     --venv      Sets up a new virtualenv, installs packages
     --nginx=    The path to Nginx sites-enabled, will symlink app's nginx.conf
                 Leave blank for a sensible default, i.e. '--nginx='
-    --auto      Start the production app on system boot
+    --auto=     user[:group] under which the Paste process should run at boot
+                If absent, app will not be set up for starting on boot
+                If group is absent, it is assumed to match the user
                 Will also start the app right after deployment
                 Probably pointless without --nginx
 
@@ -33,7 +35,7 @@ Examples:
     python deploy.py --flow --venv
 
     Typical for production environments
-    python deploy.py --flow --venv --auto --nginx
+    python deploy.py --flow --venv --auto=`id -nu`:`id -ng` --nginx
 
     After making changes to the Python code
     python deploy.py restart
@@ -137,26 +139,45 @@ def nginx(path, linux):
     return out
 
 
-def auto(linux):
+def auto(user_group, linux):
+    [user, group] = (user_group + ':' + user_group).split(':')[:2] # trick to make group=user if absent
+    out = [
+        "", "# " + '-' * 72,
+        "# Configure initd.sh with user {user}:{group}".format(user=user, group=group),
+        "# " + '-' * 72,
+        "sed -i '' 's|__user__|{user}|' bin/initd.sh".format(user=user),
+        "sed -i '' 's|__group__|{group}|' bin/initd.sh".format(group=group),
+        "",
+        ]
+
     if linux:
         out = [
-            "", "# " + '-' * 72,
             "# Sym-link to the init.d script from the proper location",
-            "# " + '-' * 72,
             "sudo ln -s /path/to/bin/initd.sh /etc/init.d/__project__",
             "sudo update-rc.d __project__ defaults",
             "",
-            "# To no longer start on boot, run:",
-            "#    sudo update-rc.d -f __project__ remove",
+            "echo",
+            "echo " + '-' * 80,
+            "echo '    To no longer start on boot, run:",
+            "echo '        sudo update-rc.d -f __project__ remove",
+            "echo " + '-' * 80,
+            "echo",
             "",
             ]
     else:
         out = [
-            "", "# " + '-' * 72,
-            "# TODO: Darwin autostart", # TODO
-            "# " + '-' * 72,
+            "# Sym-link to the LaunchAgent plist from the proper location",
+            "ln -s /path/to/bin/launchAgent.plist ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist"
+            "echo",
+            "echo " + '-' * 80,
+            "echo '    To no longer start on boot, run:",
+            "echo '        launchctl remove com.__project__.__logged_user__.production",
+            "echo '        rm ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist",
+            "echo " + '-' * 80,
+            "echo",
             "",
             ]
+
     return out
 
 
@@ -167,7 +188,7 @@ def start(opt, linux):
         out += [
             "", "# " + '-' * 72,
             "# WARNING: --auto set without --nginx",
-            "# The production server will start but the FCGI will not be served by Nginx",
+            "# The production server will start but FastCGI will not be served by Nginx",
             "# This is potentially okay if it was specifically intended",
             "# " + '-' * 72,
             "",
@@ -189,8 +210,8 @@ def start(opt, linux):
                 ]
         else:
             out += [
-                "echo '    ./etc/production.ini start'",
-                "./etc/production.ini start",
+                "echo '    ./bin/initd.sh start'",
+                "./bin/initd.sh start",
                 ]
         out += [
             "echo " + '-' * 80,
@@ -199,12 +220,20 @@ def start(opt, linux):
 
     out += [
         "", "# " + '-' * 72,
-        "# Local server instructions",
+        "# Server instructions",
         "# " + '-' * 72,
         "echo",
         "echo " + '-' * 80,
         "echo '    To run the local development server:'",
         "echo '    ./etc/local.ini'",
+        ]
+    if '--auto' in opt:
+        out += [
+            "echo " + '-' * 80,
+            "echo '    To control the local production server:'",
+            "echo '    ./bin/initd.sh (start|stop|restart)'",
+            ]
+    out += [
         "echo " + '-' * 80,
         "echo",
         "",
@@ -223,7 +252,7 @@ def main(argv):
     opt = getopt.getopt(argv, 'h', [
         'venv',
         'flow',
-        'auto',
+        'auto=',
         'nginx=',
         'help',
         ])
@@ -253,7 +282,7 @@ def main(argv):
         out += nginx(opt['--nginx'], linux)
 
     if '--auto' in opt:
-        out += auto(linux)
+        out += auto(opt['--auto'], linux)
 
     out += start(opt, linux)
 

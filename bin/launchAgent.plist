@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.__project__.__logged_user__.production</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/path/to/bin/initd.sh</string>
+    <string>start</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <false/>
+  <key>UserName</key>
+  <string>__logged_user__</string>
+  <key>WorkingDirectory</key>
+  <string>/path/to</string>
+  <key>StandardErrorPath</key>
+  <string>/path/to/var/log/launchAgent.log</string>
+  <key>StandardOutPath</key>
+  <string>/path/to/var/log/launchAgent.log</string>
+</dict>
+</plist>
+

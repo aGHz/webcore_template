@@ -85,6 +85,7 @@ def main(argv):
         "git mv src/__project__ src/{name}",
         "grep -rl __project__ * | xargs sed -i '' 's|__project__|{name}|g'",
         "grep -rl '/path/to' * | xargs sed -i '' 's|/path/to|{path}|g'",
+        "grep -rl '__logged_user__' * | xargs sed -i '' 's|__logged_user__|{user}|g'".format(user=os.getenv('LOGNAME')),
         "sed -i '' 's|https://github.com/marrow|{submodules}|' .gitmodules\n" if submodules is not None else "",
         "git commit -a -m 'Customized WebCore template'",
         "",
