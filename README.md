@@ -90,3 +90,23 @@ on boot and run under the current user and group, and finally hook the app up in
 
     python deploy.py --venv --auto=`id -nu`:`id -ng` --nginx
     
+
+Directory structure
+-------------------
+
+You may have already noticed the non-standard directory structure. This template is prepared to encapsulate
+absolutely everything about the app in its root dirctory. Where files are provided for external systems,
+they remain in the app directory and are only sym-linked to from the proper locations. Similarly with log files,
+UNIX sockets and pid files.
+
+These are the prescribed directories:
+
+    bin/             - Executable scripts, also where virtualenv puts its stuff
+    etc/             - Configuration files, including the Paste Deploy ini files
+    src/             - Source code for the app package
+    usr/src/         - Third-party source code, preferably in the form of git submodules
+    usr/share/       - Static files served by your app. Configured into nginx.conf
+    usr/templates/   - Template files, if you prefer to keep them outside your app package
+    var/log/         - Log files for nginx, paste and management commands (see bin/manage.sh)
+    var/run/         - Socket and pid files
+    
