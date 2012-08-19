@@ -35,7 +35,7 @@ Examples:
     python deploy.py --flow --venv
 
     Typical for production environments
-    python deploy.py --flow --venv --auto=`id -nu`:`id -ng` --nginx
+    python deploy.py --venv --auto=`id -nu`:`id -ng` --nginx
 
     After making changes to the Python code
     python deploy.py restart
