@@ -5,83 +5,88 @@ A useful starter kit for web applications using
 [Paste](http://pythonpaste.org/),
 [Flup](http://trac.saddi.com/flup) and
 [Nginx](http://wiki.nginx.org/Main)
- 
+
+
 tl;dr
 -----
 
-    curl -sL http://aghz.ca/webcore.py | python -
+    cd ~/src
+    curl -sL http://aghz.ca/webcore.py | python - MyProject | sh
+
 
 Setting up a new project
 ------------------------
 
-Replace `PROJECT` with the name of your project,
-`PROJ_PATH` with the absolute path to the directory where you cloned this repository
-and `PROJ_URL` with the url of the git repository for your new project.
-
-1. `git clone -b master git@github.com:aGHz/webcore_template.git PROJ_PATH`
-2. `cd PROJ_PATH`
-3. `git remote rm origin`
-4. `git mv src/__project__ src/PROJECT`
-5. `grep -rl __project__ * | xargs sed -i '' 's|__project__|PROJECT|g'`
-6. `grep -rl '/path/to' * | xargs sed -i '' 's|/path/to|PROJ_PATH|g'`
-7. `vim .gitmodules` -- update submodule repo URLs as needed
-8. `git commit -a -m 'Customized WebCore template'`
-9. `git reset --soft TAIL`
-10. `git commit --amend -m 'Initialized repository from WebCore template'`
-11. `git remote add origin PROJ_URL`
-12. `git push -u origin master`
-13. `git submodule init`
-14. `git submodule update`
-15. `git flow init`
-16. `git push -u origin develop`
-
-
-Customized setup instructions script
-------------------------------------
-
 A [script](https://github.com/aGHz/webcore_template/blob/master/setup.py) is provided
-to generate customized setup instructions.
+to automate the installation and customization of the template, also mirrored at the more convenient URL
+[http://aghz.ca/webcore.py](http://aghz.ca/webcore.py). Piping it through Python will
+output a series of documented, customized instructions which can be run manually or, after proper inspection,
+piped further through `sh`. To find help on the command line usage:
 
-    python setup.py -n PROJECT [-p PROJ_PATH] [-u PROJ_URL]
-    python setup.py --name=PROJECT --path=PROJ_PATH [--url=PROJ_URL]
+    curl -sL http://aghz.ca/webcore.py | python -
 
-Omitting `-p/--path` will create the project in a directory called PROJECT under the current directory.
+- - -
 
-Omitting `-u/--url` will not generate instructions related to uploading to a new remote (11, 12 and 16).
+    Generate setup instructions for the WebCore starter kit
+    After review, the output can be run manually or piped through sh
 
-The vanilla [.gitmodules](https://github.com/aGHz/webcore_template/blob/master/.gitmodules) file uses the
+    Syntax:
+        python setup.py <options>
+        python setup.py [options] <name>
+
+    Options:
+        -n/--name        The name of the project. Can be specified without -n, after option list
+        -p/--path        Absolute path for the project. Defaults to `pwd`/<name>
+        -u/--url         Git repository url for remote origin. Skip remote-related commands if omitted
+        --submodules     Submodule root, e.g. git@github.com/marrow, https://github.com/fork
+                         Must expose the repositories: WebCore, marrow.templating, marrow.util
+        --no-flow        Skip git-flow commands. Not recommended, install git-flow instead!
+
+    Examples:
+        python setup.py MyProject
+        python setup.py -n MyProject -p /home/me/src/my_project
+        python setup.py -u git@github.com:me/my_project --submodules=git@github.com/me MyProject
+
+
+Use the `--submodules` option to change the location where the template's submodules are cloned from.
+This is useful if you wish to use a fork, or enable write access to the submodules. By default, the
+template uses the
 [WebCore](https://github.com/marrow/WebCore),
 [marrow.templating](https://github.com/marrow/marrow.templating) and
 [marrow.util](https://github.com/marrow/marrow.util) public, read-only GitHub repositories
-provided by [marrow](https://github.com/marrow/).
-Using the `--submodules` option will attempt to automate step 7 above by replacing the root URL of
-these submodules. The given URL must contain all 3 repositories with the exact same name.
-This is useful if you prefer to use a fork of the projects, or if you want to enable read-write access.
-For example:
+provided by [marrow](https://github.com/marrow/). If you use this option, the given URL must contain
+all these repositories with the exact same name.
 
-    python setup.py ... --submodules=git@github:marrow
-    python setup.py ... --submodules=https://github.com/fork
 
-If you don't want to use [git-flow](https://github.com/nvie/gitflow/) in steps 15 and 16 above,
-specify `--no-flow`.
+Activating a project
+--------------------
 
-Semi-automatic and automatic setup
-----------------------------------
+The setup will only clone the template, customize the files and reset the git repository.
+The code is complete, but not ready to run. The script 
+[deploy.py](https://github.com/aGHz/webcore_template/blob/master/deploy.py)
+will generate instructions to prepare the virtualenv, git-flow (if not already done by the setup script)
+hook up the Nginx config and make the app start on boot. Again, these instructions can be run
+manually, or reviewed and then piped through `sh`.
 
-The raw script is available for direct download from
-[GitHub](https://raw.github.com/aGHz/webcore_template/master/setup.py)
-or from the shorter URL [http://aghz.ca/webcore.py](http://aghz.ca/webcore.py).
-The script can be grabbed via `curl` and piped to `python` to very easily generate
-a working set of instructions.
+If you just finished the setup instructions above, chances are good all you need is:
 
-    curl -sL http://aghz.ca/webcore.py | python - -n PROJECT -p PROJ_PATH
+    python develop.py --venv
 
-If you don't have any special needs and you fully trust the script, you can also pipe the output
-directly to `sh` for an automatic setup:
 
-    curl -sL http://aghz.ca/webcore.py | python - -n PROJECT -p PROJ_PATH | sh
+Deploying a project
+-------------------
 
-If you go the parent directory of your new project (e.g. `cd ~/src`), this is even nicer:
+The template is prepared with a `.gitignore` file that will keep all the local-specific files out
+of the repository. This means every time the project is cloned in a new location, it must be deployed,
+i.e. activated again. Generally there are two situations:
 
-    curl -sL http://aghz.ca/webcore.py | python - PROJECT | sh
+__Development server__: This will use git-flow to check out the develop branch and setup the virtualenv.
+The app is served directly via paste using `./etc/local.ini`.
 
+    python develop.py --flow --venv
+    
+__Production server__: This will stay on the master branch, setup the virtualenv, make the app start
+on boot and run under the current user and group, and finally hook the app up into the Nginx config.
+
+    python deploy.py --venv --auto=`id -nu`:`id -ng` --nginx
+    
