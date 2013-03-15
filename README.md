@@ -45,7 +45,7 @@ piped further through `sh`. To find help on the command line usage:
     Examples:
         python setup.py MyProject
         python setup.py -n MyProject -p /home/me/src/my_project
-        python setup.py -u git@github.com:me/my_project --submodules=git@github.com/me MyProject
+        python setup.py -u git@github.com:me/my_project --submodules=git@github.com:me MyProject
 
 
 Use the `--submodules` option to change the location where the template's submodules are cloned from.
