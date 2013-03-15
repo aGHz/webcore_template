@@ -70,7 +70,7 @@ manually, or reviewed and then piped through `sh`.
 
 If you just finished the setup instructions above, chances are good all you need is:
 
-    python develop.py --venv
+    python deploy.py --venv
 
 
 Deploying a project
@@ -83,7 +83,7 @@ i.e. activated again. Generally there are two situations:
 __Development server__: This will use git-flow to check out the develop branch and setup the virtualenv.
 The app is served directly via paste using `./etc/local.ini`.
 
-    python develop.py --flow --venv
+    python deploy.py --flow --venv
     
 __Production server__: This will stay on the master branch, setup the virtualenv, make the app start
 on boot and run under the current user and group, and finally hook the app up into the Nginx config.
