@@ -95,7 +95,7 @@ def venv():
         "", "# " + '-' * 72,
         "# Initialize virtualenv",
         "# " + '-' * 72,
-        "virtualenv --no-site-packages --distribute .",
+        "virtualenv --no-site-packages .",
         ". bin/activate",
         "",
         "# Install dependencies",
@@ -244,7 +244,7 @@ def start(opt, linux):
         "echo",
         "",
         ]
-        
+
     return out
 
 

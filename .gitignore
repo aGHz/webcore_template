@@ -18,3 +18,4 @@ eggs/
 parts/
 .Python
 .installed.cfg
+.ropeproject
