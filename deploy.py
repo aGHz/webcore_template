@@ -42,9 +42,21 @@ Examples:
 
 """
 
+COMMENT = "# " + '-' * 72
+ECHO_COMMENT = '-' * 80
 
-def restart(nginx):
-    pass
+
+def restart(nginx, linux):
+    out = []
+
+    if linux:
+        if nginx:
+            out += [
+                "echo 'sudo /etc/init.d/__project__ restart'",
+                "sudo /etc/init.d/__project__ restart",
+                ]
+
+    return out
 
 
 def flow():
@@ -52,23 +64,26 @@ def flow():
         branches = subprocess.check_output(['git', 'branch'], stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError:
         return [
-            "", "# " + '-' * 72,
+            "",
+            COMMENT,
             "# WARNING: This is not a git repository",
-            "# " + '-' * 72,
+            COMMENT,
             "",
             ]
     if 'develop' in branches:
         return [
-            "", "# " + '-' * 72,
+            "",
+            COMMENT,
             "# WARNING: --flow requested but git-flow already installed",
-            "# " + '-' * 72,
+            COMMENT,
             "",
             ]
 
     out = [
-        "", "# " + '-' * 72,
+        "",
+        COMMENT,
         "# Initialize git-flow",
-        "# " + '-' * 72,
+        COMMENT,
         "git flow init",
         "git checkout develop", # Possibly redundant
         "",
@@ -92,9 +107,10 @@ def flow():
 
 def venv():
     out = [
-        "", "# " + '-' * 72,
+        "",
+        COMMENT,
         "# Initialize virtualenv",
-        "# " + '-' * 72,
+        COMMENT,
         "virtualenv --no-site-packages .",
         ". bin/activate",
         "",
@@ -116,15 +132,17 @@ def nginx(path, linux):
             path = '/usr/local/etc/nginx/sites-enabled'
     if not os.path.isdir(path):
         out = [
-            "", "# " + '-' * 72,
+            "",
+            COMMENT,
             "# ERROR: Nginx config not found: {0}".format(path),
-            "# " + '-' * 72,
+            COMMENT,
             "",
             ]
     out += [
-        "", "# " + '-' * 72,
+        "",
+        COMMENT,
         "# Sym-link to the Nginx config from the proper location",
-        "# " + '-' * 72,
+        COMMENT,
         "{0}ln -s /path/to/etc/nginx.conf {1}".format('sudo ' if linux else '', os.path.join(path, '__project__')),
         "",
         ]
@@ -141,12 +159,15 @@ def nginx(path, linux):
 
 def auto(user_group, linux):
     [user, group] = (user_group + ':' + user_group).split(':')[:2] # trick to make group=user if absent
+    sed_inplace_separator = '' if linux else ' '
+
     out = [
-        "", "# " + '-' * 72,
+        "",
+        COMMENT,
         "# Configure initd.sh with user {user}:{group}".format(user=user, group=group),
-        "# " + '-' * 72,
-        "sed -i '' 's|__user__|{user}|' bin/initd.sh".format(user=user),
-        "sed -i '' 's|__group__|{group}|' bin/initd.sh".format(group=group),
+        COMMENT,
+        "sed -i{i_sep}'' 's|__user__|{user}|' bin/initd.sh".format(user=user, i_sep=sed_inplace_separator),
+        "sed -i{i_sep}'' 's|__group__|{group}|' bin/initd.sh".format(group=group, i_sep=sed_inplace_separator),
         "",
         ]
 
@@ -157,11 +178,11 @@ def auto(user_group, linux):
             "sudo update-rc.d __project__ defaults",
             "",
             "echo",
-            "echo " + '-' * 80,
+            "echo " + ECHO_COMMENT,
             "echo '    To no longer start on boot, run:'",
             "echo '        sudo /etc/init.d/__project__ stop'",
             "echo '        sudo update-rc.d -f __project__ remove'",
-            "echo " + '-' * 80,
+            "echo " + ECHO_COMMENT,
             "echo",
             "",
             ]
@@ -171,12 +192,12 @@ def auto(user_group, linux):
             "ln -s /path/to/bin/launchAgent.plist ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist",
             "launchctl load ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist",
             "echo",
-            "echo " + '-' * 80,
+            "echo " + ECHO_COMMENT,
             "echo '    To no longer start on boot, run:'",
             "echo '        launchctl stop com.__project__.__logged_user__.production'",
             "echo '        launchctl remove com.__project__.__logged_user__.production'",
             "echo '        rm ~/Library/LaunchAgents/com.__project__.__logged_user__.production.plist'",
-            "echo " + '-' * 80,
+            "echo " + ECHO_COMMENT,
             "echo",
             "",
             ]
@@ -189,21 +210,23 @@ def start(opt, linux):
 
     if '--auto' in opt and '--nginx' not in opt:
         out += [
-            "", "# " + '-' * 72,
+            "",
+            COMMENT,
             "# WARNING: --auto set without --nginx",
             "# The production server will start but FastCGI will not be served by Nginx",
             "# This is potentially okay if it was specifically intended",
-            "# " + '-' * 72,
+            COMMENT,
             "",
             ]
 
     if '--auto' in opt:
         out += [
-            "", "# " + '-' * 72,
+            "",
+            COMMENT,
             "# Start the production server",
-            "# " + '-' * 72,
+            COMMENT,
             "echo",
-            "echo " + '-' * 80,
+            "echo " + ECHO_COMMENT,
             "echo '    Starting production server'",
             ]
         if linux:
@@ -217,22 +240,23 @@ def start(opt, linux):
                 "launchctl start com.__project__.__logged_user__.production",
                 ]
         out += [
-            "echo " + '-' * 80,
+            "echo " + ECHO_COMMENT,
             "",
             ]
 
     out += [
-        "", "# " + '-' * 72,
+        "",
+        COMMENT,
         "# Server instructions",
-        "# " + '-' * 72,
+        COMMENT,
         "echo",
-        "echo " + '-' * 80,
+        "echo " + ECHO_COMMENT,
         "echo '    To run the local development server:'",
         "echo '    ./etc/local.ini'",
         ]
     if '--auto' in opt:
         out += [
-            "echo " + '-' * 80,
+            "echo " + ECHO_COMMENT,
             "echo '    To control the local production server:'",
             ]
         if linux:
@@ -240,7 +264,7 @@ def start(opt, linux):
         else:
             out += ["echo '    launchctl start|stop com.__project__.__logged_user__.production'"]
     out += [
-        "echo " + '-' * 80,
+        "echo " + ECHO_COMMENT,
         "echo",
         "",
         ]
@@ -270,7 +294,7 @@ def main(argv):
         return 1
 
     if 'restart' in argv:
-        restart('--nginx' in argv)
+        restart('--nginx' in argv, linux)
         return 1
 
     out = [
@@ -294,13 +318,13 @@ def main(argv):
 
     out += [
         "",
-        "# " + '-' * 72,
+        COMMENT,
         "# ",
         "#    If the script is correct, run the following to deploy:",
         "# ",
         "#    python {0}".format(' '.join(sys.argv) + ' | sh'),
         "# ",
-        "# " + '-' * 72,
+        COMMENT,
         "",
         ]
 
